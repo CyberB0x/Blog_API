@@ -5,12 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Post
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import PostSerializer
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsAuthOrReadOnly
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthOrReadOnly]
 
     # add search
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
