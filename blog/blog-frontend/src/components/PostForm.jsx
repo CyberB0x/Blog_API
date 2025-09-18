@@ -15,33 +15,34 @@ function PostForm({ token, fetchPosts }) {
       );
       setTitle("");
       setBody("");
-      fetchPosts(); // обновляем список постов
+      if (fetchPosts) fetchPosts(); // обновляем список постов
     } catch (err) {
-      console.error(err);
+      console.error("Ошибка при создании поста", err);
       alert("Ошибка при создании поста");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 mb-6">
       <input
         type="text"
-        placeholder="Title"
+        placeholder="Заголовок"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="p-2 border rounded w-full"
       />
       <textarea
-        placeholder="Body"
+        placeholder="Текст поста"
         value={body}
         onChange={(e) => setBody(e.target.value)}
         className="p-2 border rounded w-full"
+        rows={4}
       />
       <button
         type="submit"
-        className="px-4 py-2 bg-green-600 text-white rounded"
+        className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
       >
-        Создать пост
+        ➕ Создать пост
       </button>
     </form>
   );

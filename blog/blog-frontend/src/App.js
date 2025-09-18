@@ -1,44 +1,24 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Login";
 import PostForm from "./components/PostForm";
-import API from "./api";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [posts, setPosts] = useState([]);
-
-  // Загружаем посты
-  const fetchPosts = () => {
-    API.get("posts/", {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.error(err));
-  };
-
   return (
-    <div className="p-6">
-      {!token ? (
-        <Login setToken={setToken} />
-      ) : (
-        <>
-          <h1 className="text-3xl font-bold text-blue-600 mb-4">📚 Blog</h1>
+    <Router>
+      <nav className="flex gap-4 p-4 bg-gray-100 shadow">
+        <Link to="/" className="text-blue-600 font-bold">🏠 Home</Link>
+        <Link to="/create" className="text-green-600 font-bold">➕ Create Post</Link>
+        <Link to="/login" className="text-purple-600 font-bold">🔑 Login</Link>
+      </nav>
 
-          {/* форма добавления поста */}
-          <PostForm token={token} fetchPosts={fetchPosts} />
-
-          {/* список постов */}
-          <ul className="space-y-2 mt-4">
-            {posts.map((post) => (
-              <li key={post.id} className="p-4 bg-white rounded shadow">
-                <h2 className="text-xl font-semibold">{post.title}</h2>
-                <p className="text-gray-600">{post.body}</p>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-    </div>
+      <div className="p-6">
+        <Routes>
+          <Route path="/" element={<h1 className="text-2xl">Welcome to Blog API</h1>} />
+          <Route path="/create" element={<PostForm />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
